@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_NameIsBlank_badRequestTest() throws Exception {
+    @SneakyThrows
+    void createFilm_NameIsBlank_badRequestTest() {
         testFilm.setName("");
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
@@ -60,11 +62,12 @@ public class FilmControllerTest {
     void createFilm_IncorrectDescription_badRequestTest() throws Exception {
         testFilm.setDescription("Размер описания значительно превышает двести символов, а может и не превышает " +
                 "(надо посчитать). Нет, к сожалению размер описания фильма сейчас не превышает двести символов," +
-                "но вот сейчас однозначно стал превышать двести символов!");
+                "но вот сейчас однозначно стал превышать двести символов!".repeat(201));
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
                         .contentType("application/json"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""));
     }
 
     @Test
