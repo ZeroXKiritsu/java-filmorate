@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_NameIsBlank_badRequestTest() throws Exception {
+    @SneakyThrows
+    void createFilm_NameIsBlank_badRequestTest() {
         testFilm.setName("");
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
@@ -57,10 +59,9 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_IncorrectDescription_badRequestTest() throws Exception {
-        testFilm.setDescription("Размер описания значительно превышает двести символов, а может и не превышает " +
-                "(надо посчитать). Нет, к сожалению размер описания фильма сейчас не превышает двести символов," +
-                "но вот сейчас однозначно стал превышать двести символов!");
+    @SneakyThrows
+    void createFilm_IncorrectDescription_badRequestTest()  {
+        testFilm.setDescription("a".repeat(201));
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
                         .contentType("application/json"))
@@ -68,7 +69,8 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_RealiseDateInFuture_badRequestTest() throws Exception {
+    @SneakyThrows
+    void createFilm_RealiseDateInFuture_badRequestTest() {
         testFilm.setReleaseDate(LocalDate.of(2026, 12, 9));
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
@@ -77,7 +79,8 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_RealiseDateBeforeFirstFilmDate_badRequestTest() throws Exception {
+    @SneakyThrows
+        void createFilm_RealiseDateBeforeFirstFilmDate_badRequestTest() {
         testFilm.setReleaseDate(LocalDate.of(1885, 12,12));
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))

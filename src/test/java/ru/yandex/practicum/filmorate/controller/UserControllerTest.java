@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,8 @@ public class UserControllerTest {
 
 
     @Test
-    void createNewCorrectUser_Test() throws Exception {
+    @SneakyThrows
+    void createNewCorrectUser_Test() {
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(testUser))
                         .contentType("application/json"))
@@ -48,7 +50,8 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_NameIsBlank_NameIsLoginTest() throws Exception {
+    @SneakyThrows
+    void createUser_NameIsBlank_NameIsLoginTest() {
         testUser.setName("");
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(testUser))
@@ -59,7 +62,8 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_IncorrectEmailTest() throws Exception {
+    @SneakyThrows
+    void createUser_IncorrectEmailTest() {
         testUser.setEmail("incorrectEmail.ru");
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(testUser))
@@ -68,7 +72,8 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_LoginIsBlank_badRequestTest() throws Exception {
+    @SneakyThrows
+    void createUser_LoginIsBlank_badRequestTest() {
         testUser.setLogin("");
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(testUser))
@@ -77,7 +82,8 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_BirthdayInFuture_badRequestTest() throws Exception {
+    @SneakyThrows
+    void createUser_BirthdayInFuture_badRequestTest() {
         testUser.setBirthday(LocalDate.parse("2024-10-12"));
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(testUser))

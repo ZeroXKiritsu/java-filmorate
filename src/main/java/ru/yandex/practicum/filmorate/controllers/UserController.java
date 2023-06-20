@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 @Validated
 public class UserController {
 
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
     private int id = 0;
 
     @PostMapping
@@ -31,13 +32,6 @@ public class UserController {
         users.put(user.getId(), user);
         log.info("Создание нового пользователя: {}", user);
         return user;
-    }
-
-    // Вспомогательный метод для валидации пользователя
-    private void validateUser(User user)  throws ValidationException {
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
     }
 
     @PutMapping
@@ -63,5 +57,12 @@ public class UserController {
 
     private int getId() {
         return ++id;
+    }
+
+    // Вспомогательный метод для валидации пользователя
+    private void validateUser(User user)  throws ValidationException {
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+        }
     }
 }

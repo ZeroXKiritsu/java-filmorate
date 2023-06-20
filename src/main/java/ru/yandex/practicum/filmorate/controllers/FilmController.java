@@ -13,13 +13,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/films", produces = "application/json")
 @Validated
 public class FilmController {
-    private final HashMap<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>();
     private int id = 0;
 
     @PostMapping
@@ -30,13 +31,6 @@ public class FilmController {
         films.put(film.getId(), film);
         log.info("Добавление нового фильма: {}", film);
         return film;
-    }
-
-    // Вспомогательный метод для валидации фильма
-    private void validateFilm(Film film) throws ValidationException {
-        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
-            throw new ValidationException("Некорректно указана дата релиза.");
-        }
     }
 
     @PutMapping
@@ -54,13 +48,20 @@ public class FilmController {
         return film;
     }
 
-    private int getId() {
-        return ++id;
-    }
-
     @GetMapping
     public List<Film> getAllFilms() {
         // Логика получения всех фильмов
         return new ArrayList<>(films.values());
+    }
+
+    private int getId() {
+        return ++id;
+    }
+
+    // Вспомогательный метод для валидации фильма
+    private void validateFilm(Film film) throws ValidationException {
+        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
+            throw new ValidationException("Некорректно указана дата релиза.");
+        }
     }
 }
