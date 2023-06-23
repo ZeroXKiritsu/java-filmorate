@@ -16,11 +16,11 @@ import java.time.LocalDate;
 public class User {
 
     private int id;
-    @Email
-    @NonNull
+    @NotBlank(message = "логин не должен быть пустым")
+    @Email(message = "неверный адрес электронной почты")
     private String email;
     @NonNull
-    @NotBlank
+    @NotBlank(message = "логин не должен быть пустым")
     private String login;
     private String name;
     @Past

@@ -15,13 +15,13 @@ import java.time.LocalDate;
 public class Film {
 
     private int id;
-    @NotBlank
+    @NotBlank(message = "имя не должно быть пустым")
     private String name;
     @Size(max = 200)
     private String description;
-    @Past
+    @Past(message = "Дата релиза не может быть в будущем")
     private LocalDate releaseDate;
-    @Positive
+    @Positive(message = "продолжительность не должна быть отрицательной")
     private int duration;
 
 }

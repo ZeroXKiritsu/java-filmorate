@@ -81,7 +81,7 @@ public class FilmControllerTest {
     @Test
     @SneakyThrows
         void createFilm_RealiseDateBeforeFirstFilmDate_badRequestTest() {
-        testFilm.setReleaseDate(LocalDate.of(1885, 12,12));
+        testFilm.setReleaseDate(LocalDate.of(1800, 10,10));
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
                         .contentType("application/json"))

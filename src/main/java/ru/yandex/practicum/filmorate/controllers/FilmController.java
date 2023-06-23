@@ -18,7 +18,6 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping(value = "/films", produces = "application/json")
-@Validated
 public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private int id = 0;
@@ -60,7 +59,7 @@ public class FilmController {
 
     // Вспомогательный метод для валидации фильма
     private void validateFilm(Film film) throws ValidationException {
-        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
+        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-20"))) {
             throw new ValidationException("Некорректно указана дата релиза.");
         }
     }
