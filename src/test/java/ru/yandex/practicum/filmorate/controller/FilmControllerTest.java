@@ -39,6 +39,7 @@ public class FilmControllerTest {
 
 
     @Test
+    @SneakyThrows
     void createNewCorrectFilm_isOkTest() throws Exception {
         mockMvc.perform(post("/films")
                         .content(objectMapper.writeValueAsString(testFilm))
