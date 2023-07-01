@@ -12,23 +12,22 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
-    
     private final UserStorage userStorage;
-    
+
     public User addFriend(int userId, int friendId) {
         userStorage.addFriend(userId, friendId);
         return userStorage.getUserById(userId);
     }
-    
+
     public User deleteFriend(int userId, int friendId) {
         userStorage.deleteFriend(userId, friendId);
         return userStorage.getUserById(userId);
     }
-    
+
     public List<User> getUserFriends(Integer userId) {
         return userStorage.getFriendsByUserId(userId);
     }
-    
+
     public List<User> getMutualFriends(int userId, int friendId) {
         return userStorage.getMutualFriends(userId, friendId);
     }
