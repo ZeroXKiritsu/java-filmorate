@@ -25,7 +25,7 @@ public class FilmController {
         return filmStorage.addFilm(film);
     }
 
-    @PostMapping
+    @PutMapping
     public Film changeFilm(@Valid @RequestBody Film film) {
         log.info("Поступил запрос на изменения фильма");
         return filmStorage.updateFilm(film);
