@@ -18,20 +18,19 @@ import javax.validation.Valid;
 @RequestMapping(value = "/users", produces = "application/json")
 public class UserController {
 
-    private final UserStorage userStorage;
     private final UserService userService;
 
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
         log.info("Поступил запрос на создание пользователя.");
-        return userStorage.addUser(user);
+        return userService.addUser(user);
     }
 
     @PutMapping
     public User changeUser(@Valid @RequestBody User user) {
         log.info("Поступил запрос на обновление пользователя.");
-        return userStorage.updateUser(user);
+        return userService.updateUser(user);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
@@ -43,13 +42,13 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         log.info("Поступил запрос на получение списка пользователей.");
-        return userStorage.findAllUsers();
+        return userService.findAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable String id) {
         log.info("Поступил запрос на получение пользователя по id.");
-        return userStorage.getUserById(Integer.parseInt(id));
+        return userService.getUserById(Integer.parseInt(id));
     }
 
 

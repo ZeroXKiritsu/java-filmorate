@@ -16,19 +16,18 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/films", produces = "application/json")
 public class FilmController {
-    private final FilmStorage filmStorage;
     private final FilmService filmService;
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
         log.info("Поступил запрос на добавление фильма");
-        return filmStorage.addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
     public Film changeFilm(@Valid @RequestBody Film film) {
         log.info("Поступил запрос на изменения фильма");
-        return filmStorage.updateFilm(film);
+        return filmService.updateFilm(film);
     }
 
     @PutMapping("/{id}/like/{filmId}")
@@ -40,13 +39,13 @@ public class FilmController {
     @GetMapping()
     public List<Film> getFilms() {
         log.info("Поступил запрос на получение списка всех фильмов.");
-        return filmStorage.findAllFilms();
+        return filmService.findAllFilms();
     }
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable String id) {
         log.info("Получен GET-запрос на получение фильма");
-        return filmStorage.getFilmById(Integer.parseInt(id));
+        return filmService.getFilmById(Integer.parseInt(id));
     }
 
     @GetMapping("/popular")

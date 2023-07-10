@@ -24,7 +24,7 @@ public class FilmControllerTest {
     protected void init() {
         filmStorage = new InMemoryFilmStorage();
         filmService = new FilmService(filmStorage);
-        controller = new FilmController(filmStorage, filmService);
+        controller = new FilmController(filmService);
         testFilm = Film.builder()
                 .name("Тестовый фильм")
                 .description("Тестовое описание тестового фильма")
@@ -34,51 +34,34 @@ public class FilmControllerTest {
 
     }
 
-
-    @Test
-    void createNewCorrectFilm_isOkTest() {
-       controller.create(testFilm);
-       Assertions.assertEquals(testFilm, filmStorage.getFilmById(1));
-    }
-
     @Test
     void createFilm_NameIsBlank_badRequestTest() {
         testFilm.setName("");
-        try {
-            controller.create(testFilm);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Некорректно указано название фильма.", e.getMessage());
-        }
+        Assertions.assertThrows(ValidationException.class, () -> controller.create(testFilm), "Некорректно указано название фильма.");
     }
 
     @Test
-    void createFilm_IncorrectDescription_badRequestTest()  {
+    void createFilm_IncorrectDescription_badRequestTest() {
         testFilm.setDescription("a".repeat(201));
-        try {
-            controller.create(testFilm);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Превышено количество символов в описании фильма.", e.getMessage());
-        }
+        Assertions.assertThrows(ValidationException.class, () -> controller.create(testFilm), "Превышено количество символов в описании фильма.");
     }
 
     @Test
     void createFilm_RealiseDateInFuture_badRequestTest() {
         testFilm.setReleaseDate(LocalDate.of(2033, 4, 14));
-        try {
-            controller.create(testFilm);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Некорректно указана дата релиза.", e.getMessage());
-        }
+        Assertions.assertThrows(ValidationException.class, () -> controller.create(testFilm), "Некорректно указана дата релиза.");
     }
 
     @Test
     void createFilm_RealiseDateBeforeFirstFilmDate_badRequestTest() {
         testFilm.setReleaseDate(LocalDate.of(1833, 4, 14));
-        try {
-            controller.create(testFilm);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Некорректно указана дата релиза.", e.getMessage());
-        }
+        Assertions.assertThrows(ValidationException.class, () -> controller.create(testFilm), "Некорректно указана дата релиза.");
+    }
+
+    @Test
+    void createNewCorrectFilm_isOkTest() {
+       controller.create(testFilm);
+       Assertions.assertEquals(testFilm, filmStorage.getFilmById(1));
     }
 
 }

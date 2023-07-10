@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.service.film;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundExceptionEntity;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
@@ -18,6 +18,22 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
 
+    public Film addFilm(Film film) {
+        return filmStorage.addFilm(film);
+    }
+
+    public Film updateFilm(Film film) {
+        return filmStorage.updateFilm(film);
+    }
+
+    public List<Film> findAllFilms() {
+        return filmStorage.findAllFilms();
+    }
+
+    public Film getFilmById(int id) {
+        return filmStorage.getFilmById(id);
+    }
+
     public void like(int filmId, int userId) {
         filmStorage.getFilmById(filmId).getLikes().add(userId);
     }
@@ -26,7 +42,7 @@ public class FilmService {
         if (filmStorage.getFilmById(filmId).getLikes().contains(userId)) {
             filmStorage.getFilmById(filmId).getLikes().remove(userId);
         } else {
-            throw new NotFoundException("Пользователь не ставил лайк этому фильму.");
+            throw new NotFoundExceptionEntity("Пользователь не ставил лайк этому фильму.");
         }
     }
 
