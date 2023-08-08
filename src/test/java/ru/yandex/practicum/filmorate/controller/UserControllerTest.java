@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserControllerTest {
+class UserControllerTest {
     UserController controller;
     UserStorage userStorage;
     UserService userService;
@@ -23,7 +23,7 @@ public class UserControllerTest {
     protected void init() {
         userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
-        controller = new UserController(userService);
+        controller = new UserController(userService, userStorage);
 
         testUser = User.builder()
                 .name("John")
@@ -31,21 +31,22 @@ public class UserControllerTest {
                 .login("login")
                 .birthday(LocalDate.of(1987, 4, 14))
                 .build();
+
     }
 
     @Test
-    void createUser_NameIsBlank_NameIsLoginTest() {
+    public void createUser_NameIsBlank_NameIsLoginTest() {
         testUser.setName("");
         controller.create(testUser);
         assertEquals("login", controller.getUsers().get(0).getName());
     }
 
     @Test
-    void createUser_BirthdayInFuture_badRequestTest() {
+    void createUser_BirthdayInFuture_badRequestTest()  {
         testUser.setBirthday(LocalDate.parse("2024-10-12"));
-        try {
+        try{
             controller.create(testUser);
-        } catch (ValidationException e) {
+        } catch (ValidationException e){
             assertEquals("Неверно указана дата рождения", e.getMessage());
         }
     }

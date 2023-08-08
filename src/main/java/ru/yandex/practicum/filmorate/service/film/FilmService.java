@@ -16,37 +16,15 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
 
-    public Film addFilm(Film film) {
-        return filmStorage.addFilm(film);
+    public Film like(int filmId, int userId) {
+        return filmStorage.like(filmId, userId);
     }
 
-    public Film updateFilm(Film film) {
-        return filmStorage.updateFilm(film);
-    }
-
-    public List<Film> findAllFilms() {
-        return filmStorage.findAllFilms();
-    }
-
-    public Film getFilmById(int id) {
-        return filmStorage.getFilmById(id);
-    }
-
-    public void like(int filmId, int userId) {
-        filmStorage.getFilmById(filmId).getLikes().add(userId);
-    }
-
-    public void deleteLike(int userId, int filmId) {
-        if (filmStorage.getFilmById(filmId).getLikes().contains(userId)) {
-            filmStorage.getFilmById(filmId).getLikes().remove(userId);
-        } else {
-            throw new NotFoundExceptionEntity("Пользователь не ставил лайк этому фильму.");
-        }
+    public Film deleteLike(int filmId, int userId) {
+        return filmStorage.deleteLike(filmId, userId);
     }
 
     public List<Film> getTopFilms(int count) {
-        return filmStorage.findAllFilms().stream().sorted((film1, film2) ->
-                        film2.getLikes().size() - film1.getLikes().size())
-                .limit(count).collect(Collectors.toList());
+        return filmStorage.getRating(count);
     }
 }

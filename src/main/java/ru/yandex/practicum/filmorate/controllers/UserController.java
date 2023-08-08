@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.user.UserService;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.List;
 
@@ -18,18 +19,18 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-
+    private final UserStorage userStorage;
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
         log.info("Поступил запрос на создание пользователя.");
-        return userService.addUser(user);
+        return userStorage.addUser(user);
     }
 
     @PutMapping
     public User changeUser(@Valid @RequestBody User user) {
         log.info("Поступил запрос на обновление пользователя.");
-        return userService.updateUser(user);
+        return userStorage.updateUser(user);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
@@ -41,13 +42,13 @@ public class UserController {
     @GetMapping
     public List<User> getUsers() {
         log.info("Поступил запрос на получение списка пользователей.");
-        return userService.findAllUsers();
+        return userStorage.findAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable String id) {
         log.info("Поступил запрос на получение пользователя по id.");
-        return userService.getUserById(Integer.parseInt(id));
+        return userStorage.getUserById(Integer.parseInt(id));
     }
 
 
