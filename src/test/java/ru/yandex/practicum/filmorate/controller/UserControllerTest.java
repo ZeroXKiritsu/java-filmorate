@@ -23,7 +23,7 @@ class UserControllerTest {
     protected void init() {
         userStorage = new InMemoryUserStorage();
         userService = new UserService(userStorage);
-        controller = new UserController(userService, userStorage);
+        controller = new UserController(userService);
 
         testUser = User.builder()
                 .name("John")
