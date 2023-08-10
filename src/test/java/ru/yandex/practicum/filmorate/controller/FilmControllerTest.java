@@ -54,9 +54,7 @@ public class FilmControllerTest {
 
     @Test
     void createFilm_IncorrectDescription_badRequestTest() {
-        testFilm.setDescription("Размер описания значительно превышает двести символов, а может и не превышает " +
-                "(надо посчитать). Нет, к сожалению размер описания фильма сейчас не превышает двести символов," +
-                "но вот сейчас однозначно стал превышать двести символов!");
+        testFilm.setDescription("a".repeat(201));
         try {
             controller.create(testFilm);
         } catch (ValidationException e) {

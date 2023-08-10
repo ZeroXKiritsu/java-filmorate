@@ -50,12 +50,16 @@ public class GenreDbStorage implements GenreStorage {
         if (Objects.isNull(film.getGenres())) {
             return;
         }
+
+        String sqlQuery = "INSERT INTO genre(film_id, genre_id) VALUES (?, ?)";
+        List<Object[]> batchArgs = new ArrayList<>();
+
         film.getGenres().forEach(g -> {
-            String sqlQuery = "INSERT INTO genre(film_id, genre_id) VALUES (?, ?)";
-            jdbcTemplate.update(sqlQuery,
-                    film.getId(),
-                    g.getId());
+            Object[] args = new Object[]{film.getId(), g.getId()};
+            batchArgs.add(args);
         });
+
+        jdbcTemplate.batchUpdate(sqlQuery, batchArgs);
     }
 
     @Override

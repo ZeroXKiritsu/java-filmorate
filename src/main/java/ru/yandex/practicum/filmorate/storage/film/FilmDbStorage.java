@@ -16,6 +16,7 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Primary
@@ -32,22 +33,15 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public List<Film> findAllFilms() {
         List<Film> films = new ArrayList<>();
-        SqlRowSet filmRows = jdbcTemplate.queryForRowSet("SELECT film_id, name, description, release_date," +
-                " duration, rating_mpa_id FROM films");
-        while (filmRows.next()) {
-            Film film = Film.builder()
-                    .id(filmRows.getInt("film_id"))
-                    .name(filmRows.getString("name"))
-                    .description(filmRows.getString("description"))
-                    .releaseDate(Objects.requireNonNull(filmRows.getDate("release_date")).toLocalDate())
-                    .duration(filmRows.getInt("duration"))
-                    .mpa(mpaDbStorage.getMpa(filmRows.getInt("rating_mpa_id")))
-                    .build();
-            film.setGenres(genreDbStorage.getGenreForCurrentFilm(film.getId()));
-            film.setLikes(likeStorage.getLikesForCurrentFilm(film.getId()));
 
+        String query = "SELECT film_id, name, description, release_date, duration, rating_mpa_id FROM films";
+        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(query);
+
+        while (filmRows.next()) {
+            Film film = buildFilmFromRow(filmRows);
             films.add(film);
         }
+
         return films;
     }
 
@@ -142,5 +136,28 @@ public class FilmDbStorage implements FilmStorage {
         values.put("duration", film.getDuration());
         values.put("rating_mpa_id", film.getMpa().getId());
         return values;
+    }
+
+    private Film buildFilmFromRow(SqlRowSet row) {
+        int filmId = row.getInt("film_id");
+        String name = row.getString("name");
+        String description = row.getString("description");
+        LocalDate releaseDate = Objects.requireNonNull(row.getDate("release_date")).toLocalDate();
+        int duration = row.getInt("duration");
+        int ratingMpaId = row.getInt("rating_mpa_id");
+
+        Film film = Film.builder()
+            .id(filmId)
+            .name(name)
+            .description(description)
+            .releaseDate(releaseDate)
+            .duration(duration)
+            .mpa(mpaDbStorage.getMpa(ratingMpaId))
+            .build();
+
+        film.setGenres(genreDbStorage.getGenreForCurrentFilm(filmId));
+        film.setLikes(likeStorage.getLikesForCurrentFilm(filmId));
+
+        return film;
     }
 }

@@ -14,6 +14,22 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
 
+    public Film addFilm(Film film) {
+        return filmStorage.addFilm(film);
+    }
+
+    public Film updateFilm(Film film) {
+        return filmStorage.updateFilm(film);
+    }
+
+    public Film getFilmById(int id) {
+        return filmStorage.getFilmById(id);
+    }
+
+   public List<Film> findAllFilms() {
+        return filmStorage.findAllFilms();
+    }
+
     public Film like(int filmId, int userId) {
         return filmStorage.like(filmId, userId);
     }

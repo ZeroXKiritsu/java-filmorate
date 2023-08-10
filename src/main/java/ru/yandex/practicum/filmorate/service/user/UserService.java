@@ -12,6 +12,22 @@ import java.util.List;
 public class UserService {
     private final UserStorage userStorage;
 
+    public List<User> findAllUsers() {
+        return userStorage.findAllUsers();
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(user);
+    }
+
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
+    }
+
+    public User getUserById(Integer id) {
+        return userStorage.getUserById(id);
+    }
+
     public User addFriend(int userId, int friendId) {
         userStorage.addFriend(userId, friendId);
         return userStorage.getUserById(userId);
