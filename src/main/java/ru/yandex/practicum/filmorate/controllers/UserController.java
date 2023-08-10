@@ -16,9 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/users", produces = "application/json")
 public class UserController {
-
     private final UserService userService;
-
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {

@@ -12,16 +12,16 @@ import java.util.List;
 public class UserService {
     private final UserStorage userStorage;
 
+    public List<User> findAllUsers() {
+        return userStorage.findAllUsers();
+    }
+
     public User addUser(User user) {
         return userStorage.addUser(user);
     }
 
     public User updateUser(User user) {
         return userStorage.updateUser(user);
-    }
-
-    public List<User> findAllUsers() {
-        return userStorage.findAllUsers();
     }
 
     public User getUserById(Integer id) {
@@ -42,7 +42,7 @@ public class UserService {
         return userStorage.getFriendsByUserId(userId);
     }
 
-    public List<User> getMutualFriends(int userId, int friendId) {
-        return userStorage.getMutualFriends(userId, friendId);
+    public List<User> getMutualFriends(int userId, int otherId) {
+        return userStorage.getMutualFriends(userId, otherId);
     }
 }

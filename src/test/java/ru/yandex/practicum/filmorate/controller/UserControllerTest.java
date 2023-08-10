@@ -11,9 +11,9 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserControllerTest {
+class UserControllerTest {
     UserController controller;
     UserStorage userStorage;
     UserService userService;
@@ -31,10 +31,11 @@ public class UserControllerTest {
                 .login("login")
                 .birthday(LocalDate.of(1987, 4, 14))
                 .build();
+
     }
 
     @Test
-    void createUser_NameIsBlank_NameIsLoginTest() {
+    public void createUser_NameIsBlank_NameIsLoginTest() {
         testUser.setName("");
         controller.create(testUser);
         assertEquals("login", controller.getUsers().get(0).getName());

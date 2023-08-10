@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -53,6 +54,29 @@ public class InMemoryFilmStorage implements FilmStorage {
         } else {
             throw new NotFoundExceptionEntity("Film not found.");
         }
+    }
+
+    @Override
+    public Film like(int filmId, int userId) {
+        getFilmById(filmId).getLikes().add(userId);
+        return getFilmById(filmId);
+    }
+
+    @Override
+    public Film deleteLike(int filmId, int userId) {
+        if (getFilmById(filmId).getLikes().contains(userId)) {
+            getFilmById(filmId).getLikes().remove(userId);
+        } else {
+            throw new NotFoundExceptionEntity("Пользователь не ставил оценку данному фильму.");
+        }
+        return getFilmById(filmId);
+    }
+
+    @Override
+    public List<Film> getRating(int count) {
+        return findAllFilms().stream()
+                .sorted((film1, film2) -> film2.getLikes().size() - film1.getLikes().size())
+                .limit(count).collect(Collectors.toList());
     }
 
     public int getId() {
