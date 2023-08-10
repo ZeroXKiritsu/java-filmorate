@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -80,7 +81,7 @@ public class FilmDbStorage implements FilmStorage {
                 "FROM films WHERE film_id=?";
         try {
             return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id);
-        } catch (RuntimeException e) {
+        } catch (DataAccessException e) {
             throw new NotFoundExceptionEntity("Фильм не найден.");
         }
     }
